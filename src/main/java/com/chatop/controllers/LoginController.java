@@ -12,7 +12,7 @@ import com.chatop.services.JWTService;
 import com.chatop.services.userService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class LoginController {
 
     @Autowired
