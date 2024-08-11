@@ -29,9 +29,10 @@ public class user {
     
     @Column(name = "updated_at")
     private String updated_at;
-    
-    
-    
+
+    @Column(name = "token")
+    private String token;
+
     public int getId() {
         return this.id;
     }
@@ -51,24 +52,31 @@ public class user {
     public String getEmail() {
         return this.email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
     public String getCreated_at() {
         return this.created_at;
     }
-
+    
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
-
+    
     public String getUpdated_at() {
         return this.updated_at;
     }
-
+    
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
     
+    public String getToken() {
+        return this.token;
+    }
+    
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
