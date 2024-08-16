@@ -4,7 +4,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chatop.model.rentals;
+import com.chatop.model.DBRentals;
 import com.chatop.repository.rentalsRepository;
 
 @Service
@@ -13,19 +13,35 @@ public class rentalsService {
     @Autowired
     private rentalsRepository rentalsRepository;
 
-    public Iterable<rentals> getRentals(){
+    public Iterable<DBRentals> getRentals(){
         return rentalsRepository.findAll();
     }
 
-    public Optional<rentals> getRentalById(Integer Id){
+    public Optional<DBRentals> getRentalById(Integer Id){
         return rentalsRepository.findById(Id);
     }
 
-    public rentals addRentals(rentals rental){
-        return rentalsRepository.save(rental);
+    public void addRentals(DBRentals rental){
+        rentalsRepository.save(rental);
     }
 
-    public void removeRental(rentals rental){
+    public void removeRental(DBRentals rental){
         rentalsRepository.delete(rental);
     }
+
+    public void updateRental(String id, DBRentals rental){
+        Optional<DBRentals> pRental = getRentalById(Integer.parseInt(id));
+
+        // rentalsRepository.
+        String name;
+        int surface;
+        int price;
+        String picture;
+        String description;
+        int owner_id;
+        String updated_at;
+    
+    }
+
+
 }
