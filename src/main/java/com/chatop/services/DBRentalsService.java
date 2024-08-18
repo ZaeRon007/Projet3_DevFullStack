@@ -1,5 +1,6 @@
 package com.chatop.services;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class DBRentalsService {
 
     public void updateRental(String id, DBRentals DBRentals){
         DBRentals.setId(Integer.parseInt(id));
+        DBRentals.setUpdated_at(LocalDate.now().toString());
         DBRentalsRepository.save(DBRentals);
     }
 

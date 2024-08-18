@@ -13,15 +13,8 @@ public class DBUserService {
     @Autowired
     private DBUserRepository DBUserRepository;
 
-    // @Autowired
-	// private JWTService jwtService;
-
     @Autowired
     PasswordEncoder PasswordEncoder;
-
-    // public DBUserService(JWTService jwtService) {
-	// 	this.jwtService = jwtService;
-	// }
 
     public Iterable<DBUser> getUsers(){
         return DBUserRepository.findAll();

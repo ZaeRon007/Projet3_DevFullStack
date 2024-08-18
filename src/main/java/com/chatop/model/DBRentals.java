@@ -33,7 +33,7 @@ public class DBRentals {
     @Column(name = "picture")
     private String picture;
     
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
     
     @Column(name = "owner_id")

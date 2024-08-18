@@ -1,5 +1,6 @@
 package com.chatop.controllers;
 
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,12 @@ import com.chatop.model.JwtResponse;
 import com.chatop.repository.DBUserRepository;
 import com.chatop.services.DBUserService;
 import com.chatop.services.JWTService;
-
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
 @RequestMapping("/api/auth")
-public class RegistrationLoginController {
+public class DBUserController {
 
     @Autowired
     private DBUserService DBUserService;
@@ -35,7 +35,7 @@ public class RegistrationLoginController {
     @Autowired
     private JWTService jwtService;
 
-    public RegistrationLoginController(JWTService jwtService) {
+    public DBUserController(JWTService jwtService) {
 		this.jwtService = jwtService;
 	}
 
@@ -58,6 +58,7 @@ public class RegistrationLoginController {
 
             DBUser userToAdd = DBUserRepository.findByEmail(inputUser.getEmail());
             userToAdd.setToken(jwtService.generateToken(userToAdd));
+            userToAdd.setUpdated_at(LocalDate.now().toString());
             //mise à jour de user
             DBUserRepository.save(userToAdd);
             
