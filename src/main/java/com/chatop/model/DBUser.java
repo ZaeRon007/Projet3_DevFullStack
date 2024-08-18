@@ -37,4 +37,20 @@ public class DBUser {
     @Column(name = "token")
     private String token;
 
+
+    public DBUser(){}
+
+    public DBUser(  String name,
+                    String email,
+                    String created_at,
+                    String updated_at,
+                    String password,
+                    String token){
+        this.name = name;
+        this.email = email;
+        this.created_at = created_at;
+        this.updated_at = updated_at; 
+        this.password = password;
+        this.token = token;                
+    }
 }

@@ -44,4 +44,22 @@ public class DBRentals {
     
     @Column(name = "updated_at")
     private String updated_at;
+
+    public DBRentals(){}
+
+    public DBRentals(   String name,
+                        int surface,
+                        int price,
+                        String picture,
+                        String description,
+                        String created_at,
+                        String updated_at){
+        
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
 }
