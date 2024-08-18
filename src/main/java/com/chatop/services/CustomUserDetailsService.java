@@ -19,11 +19,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     DBUserRepository DBUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        DBUser user = DBUserRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
+        DBUser user = DBUserRepository.findByEmail(email);
 
         if(user == null){
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("User not found with username: " + email);
         }
         return new User(user.getName(), 
                         user.getPassword(), 

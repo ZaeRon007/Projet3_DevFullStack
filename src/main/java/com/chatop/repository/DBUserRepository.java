@@ -8,7 +8,7 @@ import com.chatop.model.DBUser;
 
 @Repository
 public interface DBUserRepository extends CrudRepository<DBUser, Integer>{
-    DBUser findByUsername(String username);
+    DBUser findByEmail(String email);
     DBUser findByName(String name);
     DBUser findById(int id);
 }

@@ -1,8 +1,7 @@
 package com.chatop.configuration;
 
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,9 +26,8 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 @EnableWebSecurity
 public class ChatopSecurityConfig {
 
-	@Value("${security.jwt.secret-key}")
-    private String jwtKey;
-
+	@Autowired
+	private SecretKey jwtSecretKey;
 	
 	@Autowired
 	CustomUserDetailsService CustomUserDetailsService;
@@ -48,13 +46,12 @@ public class ChatopSecurityConfig {
 
 	@Bean
 	public JwtEncoder jwtEncoder() {
-		return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
+		return new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecretKey));
 	}
 
 	@Bean
 	public JwtDecoder jwtDecoder() {
-		SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
-		return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
+		return NimbusJwtDecoder.withSecretKey(jwtSecretKey).macAlgorithm(MacAlgorithm.HS256).build();
 	}
 
 	@Bean

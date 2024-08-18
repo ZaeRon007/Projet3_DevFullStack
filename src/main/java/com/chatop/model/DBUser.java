@@ -23,7 +23,7 @@ public class DBUser {
     private String name;
 
     @Column(name = "email")
-    private String username;
+    private String email;
     
     @Column(name = "created_at")
     private String created_at;

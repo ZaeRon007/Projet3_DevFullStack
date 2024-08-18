@@ -30,10 +30,9 @@ public class DBUserService {
     public DBUser createUser(DBUser DBUser){
         DBUser userToAdd = new DBUser();
         userToAdd.setName(DBUser.getName());
-        userToAdd.setUsername(DBUser.getUsername());
+        userToAdd.setEmail(DBUser.getEmail());
         userToAdd.setCreated_at(LocalDate.now().toString());
         userToAdd.setUpdated_at(LocalDate.now().toString());
-        // userToAdd.setToken(jwtService.generateToken(DBUser));
         userToAdd.setPassword(PasswordEncoder.encode(DBUser.getPassword()));
         return userToAdd;
     }
