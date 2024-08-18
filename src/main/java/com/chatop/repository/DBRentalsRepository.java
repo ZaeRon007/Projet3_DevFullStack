@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.chatop.model.DBRentals;
 
 @Repository
-public interface rentalsRepository extends CrudRepository<DBRentals, Integer>{
+public interface DBRentalsRepository extends CrudRepository<DBRentals, Integer>{
     
 }

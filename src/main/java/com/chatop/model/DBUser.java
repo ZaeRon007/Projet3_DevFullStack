@@ -7,11 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "user")
 public class DBUser {
@@ -25,7 +23,7 @@ public class DBUser {
     private String name;
 
     @Column(name = "email")
-    private String email;
+    private String username;
     
     @Column(name = "created_at")
     private String created_at;

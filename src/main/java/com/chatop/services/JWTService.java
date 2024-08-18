@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import com.chatop.model.DBUser;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
-@Configuration
 @Service
 public class JWTService {
 
