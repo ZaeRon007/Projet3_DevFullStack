@@ -100,4 +100,8 @@ public class DBUserService {
             cursor++;
         return cursor;
     }
+
+    public ResponseEntity<?> getUserDtoById(String id) throws NumberFormatException, ParseException {
+        return ResponseEntity.ok().body(userDto.DBUserToObjectUser(DBUserRepository.findById(Integer.parseInt(id))));
+    }
 }

@@ -1,14 +1,15 @@
 package com.chatop.model.responses;
 
-import com.chatop.model.DBRentals;
+import java.util.ArrayList;
 
+import com.chatop.dto.RentalDto;
 import lombok.Data;
 
 @Data
 public class JwtResponse_Rentals {
-    Iterable<DBRentals> rentals;
+    ArrayList<RentalDto> rentals;
 
-    public JwtResponse_Rentals(Iterable<DBRentals> iterable){
+    public JwtResponse_Rentals( ArrayList<RentalDto> iterable){
         this.rentals = iterable;
     }
 }

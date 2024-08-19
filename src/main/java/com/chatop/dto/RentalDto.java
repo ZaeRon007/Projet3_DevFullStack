@@ -1,6 +1,10 @@
 package com.chatop.dto;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.context.annotation.Configuration;
 import com.chatop.model.DBRentals;
@@ -14,7 +18,7 @@ public class RentalDto {
     int surface;
     int price;
     // Resource picture;
-    String picture;
+    byte[] picture;
     String description;
     int owner_id;
     String created_at;
@@ -27,7 +31,7 @@ public class RentalDto {
                         int surface,
                         int price,
                         // Resource picture,
-                        String picture,
+                        byte[] picture,
                         String description,
                         int owner_id,
                         String created_at,
@@ -45,13 +49,12 @@ public class RentalDto {
     }
 
 
-    public RentalDto DBRentalToObjectRental( DBRentals  dbRental) throws ParseException{
+    public RentalDto DBRentalToObjectRental( DBRentals  dbRental) throws ParseException, IOException{
         return new RentalDto(   dbRental.getId(),
                                 dbRental.getName(), 
                                 dbRental.getSurface(),
                                 dbRental.getPrice(),
-                                // getRentalImage(dbRental.getPicture()),
-                                dbRental.getPicture(),
+                                getRentalImage(dbRental.getPicture()),
                                 dbRental.getDescription(), 
                                 dbRental.getOwner_id(),
                                 dbRental.getCreated_at(), 
@@ -82,18 +85,26 @@ public class RentalDto {
                                 rentals.get().getUpdated_at());
     }
 
+    public ArrayList<RentalDto> IterableDBRentalsToArrayListObjectRentals(Iterable<DBRentals> rentals) throws IOException{
+        ArrayList<RentalDto> res = new ArrayList<>(); 
 
-    // private Resource getRentalImage(String path){
-    //     try {
-    //         Path filepath = Paths.get(path);
-    //         Resource resource = new UrlResource(filepath.toUri());
-            
-    //         if(resource.exists() || resource.isReadable()){
-    //             return resource;
-    //         }
-    //     } catch (Exception e) {
-    //         System.out.printf("Erreur: %s\n",e);
-    //     }
-    //     return null;
-    // }
+        for (DBRentals dbRentals : rentals) {
+            res.add(new RentalDto(  dbRentals.getId(),
+                                    dbRentals.getName(),
+                                    dbRentals.getSurface(),
+                                    dbRentals.getPrice(),
+                                    getRentalImage(dbRentals.getPicture()),
+                                    dbRentals.getDescription(),
+                                    dbRentals.getOwner_id(),
+                                    dbRentals.getCreated_at(),
+                                    dbRentals.getUpdated_at()));
+        }
+        return res;
+    }
+
+
+    private static byte[] getRentalImage(String path) throws IOException{
+        File imgPath = new File(path);
+        return Files.readAllBytes(imgPath.toPath());
+    }
 }

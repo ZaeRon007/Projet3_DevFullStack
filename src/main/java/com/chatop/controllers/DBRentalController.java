@@ -3,6 +3,8 @@ package com.chatop.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.chatop.services.DBRentalsService;
+
+import java.io.IOException;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,12 @@ public class DBRentalController {
     private DBRentalsService DBRentalsService;
 
     @GetMapping("/rentals")
-    public ResponseEntity<?> getRentals() {
+    public ResponseEntity<?> getRentals() throws IOException {
         return DBRentalsService.getRentals();
     }
 
     @GetMapping("/rentals/{id}")
-    public ResponseEntity<?> getRentalsById(@PathVariable Integer id) throws ParseException {
+    public ResponseEntity<?> getRentalsById(@PathVariable Integer id) throws ParseException, IOException {
         return DBRentalsService.getRentalsById(id);
     }
 

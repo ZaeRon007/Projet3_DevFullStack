@@ -34,8 +34,8 @@ public class DBRentalsService {
 
     private int previousGetRentalId = -1;
 
-    public ResponseEntity<?> getRentals(){
-        return ResponseEntity.ok().body( new JwtResponse_Rentals(DBRentalsRepository.findAll()));
+    public ResponseEntity<?> getRentals() throws IOException{
+        return ResponseEntity.ok().body( new JwtResponse_Rentals(rentalDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll())));
     }
 
     public void addRentals(DBRentals DBRentals){
@@ -65,7 +65,7 @@ public class DBRentalsService {
     }
         
 
-    public ResponseEntity<?> getRentalsById(int id) throws ParseException {
+    public ResponseEntity<?> getRentalsById(int id) throws ParseException, IOException {
         previousGetRentalId = id;
         return ResponseEntity.ok().body(rentalDto.DBRentalToObjectRental(DBRentalsRepository.findById(id)));
     }
