@@ -1,4 +1,4 @@
-package com.chatop.DTO;
+package com.chatop.dto;
 
 import org.springframework.context.annotation.Configuration;
 import java.text.ParseException;
@@ -16,10 +16,12 @@ public class UserDto {
 
     public UserDto(){}
 
-    public UserDto( String name,
+    public UserDto( int id,
+                    String name,
                     String email,
                     String created_at,
                     String updated_at){
+        this.id = id;
         this.name = name;
         this.email = email;
         this.created_at = created_at;
@@ -27,14 +29,16 @@ public class UserDto {
     }
     
     public UserDto DBUserToObjectUser( DBUser  dbuser) throws ParseException{
-        return new UserDto( dbuser.getName(), 
+        return new UserDto( dbuser.getId(),
+                            dbuser.getName(), 
                             dbuser.getEmail(), 
                             dbuser.getCreated_at(), 
                             dbuser.getUpdated_at());
     }
 
     public DBUser ObjectUserToDBUser( UserDto userDto){
-        return new DBUser(  userDto.getName(),
+        return new DBUser(  userDto.getId(),
+                            userDto.getName(),
                             userDto.getEmail(),
                             userDto.getCreated_at().toString(),
                             userDto.getUpdated_at().toString(),
