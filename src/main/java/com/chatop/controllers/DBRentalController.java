@@ -3,6 +3,7 @@ package com.chatop.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.chatop.services.DBRentalsService;
+import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +27,7 @@ public class DBRentalController {
     }
 
     @GetMapping("/rentals/{id}")
-    public ResponseEntity<?> getRentalsById(@PathVariable Integer id) {
+    public ResponseEntity<?> getRentalsById(@PathVariable Integer id) throws ParseException {
         return DBRentalsService.getRentalsById(id);
     }
 
@@ -55,4 +54,10 @@ public class DBRentalController {
                                             @RequestParam("description") String description) {
         return DBRentalsService.updateRental(id, name, surface, price, description);
     }   
+
+    @PostMapping("/messages")
+    public ResponseEntity<?> postMessage(@RequestBody String entity) {
+        return DBRentalsService.postMessage(entity);
+    }
+    
 }

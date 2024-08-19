@@ -23,7 +23,6 @@ public class DBRentals {
     @Column(name = "name")
     private String name;
 
-    
     @Column(name = "surface")
     private int surface;
     
@@ -47,18 +46,23 @@ public class DBRentals {
 
     public DBRentals(){}
 
-    public DBRentals(   String name,
+    public DBRentals(   int id,
+                        String name,
                         int surface,
                         int price,
                         String picture,
                         String description,
+                        int owner_id,
                         String created_at,
                         String updated_at){
         
+        this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
+        this.picture = picture;
         this.description = description;
+        this.owner_id = owner_id;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }

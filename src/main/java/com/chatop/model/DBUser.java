@@ -40,12 +40,14 @@ public class DBUser {
 
     public DBUser(){}
 
-    public DBUser(  String name,
+    public DBUser(  int id,
+                    String name,
                     String email,
                     String created_at,
                     String updated_at,
                     String password,
                     String token){
+        this.id = id;
         this.name = name;
         this.email = email;
         this.created_at = created_at;

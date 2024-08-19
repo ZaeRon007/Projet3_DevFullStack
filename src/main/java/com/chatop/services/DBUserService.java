@@ -11,9 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.chatop.DTO.UserDto;
+import com.chatop.dto.UserDto;
 import com.chatop.model.DBUser;
-import com.chatop.model.JwtResponse;
+import com.chatop.model.responses.JwtResponse_Token;
+import com.chatop.repository.DBRentalsRepository;
 import com.chatop.repository.DBUserRepository;
 
 @Service
@@ -43,7 +44,8 @@ public class DBUserService {
     }
 
     public DBUser createUser(DBUser DBUser){
-        DBUser userToAdd = new DBUser(  DBUser.getName(),
+        DBUser userToAdd = new DBUser(  getANewId(),
+                                        DBUser.getName(),
                                         DBUser.getEmail(),
                                         LocalDate.now().toString(),
                                         LocalDate.now().toString(),
@@ -68,7 +70,7 @@ public class DBUserService {
         userToAdd.setToken(jwtService.generateToken(userToAdd));
         DBUserRepository.save(userToAdd);
         
-        return ResponseEntity.ok(new JwtResponse(userToAdd.getToken()));
+        return ResponseEntity.ok(new JwtResponse_Token(userToAdd.getToken()));
     }
 
     public ResponseEntity<?> login(DBUser inputUser) {
@@ -80,7 +82,7 @@ public class DBUserService {
             userToAdd.setUpdated_at(LocalDate.now().toString());
             DBUserRepository.save(userToAdd);
             
-            return ResponseEntity.ok(new JwtResponse(userToAdd.getToken()));
+            return ResponseEntity.ok(new JwtResponse_Token(userToAdd.getToken()));
         } catch (Exception e) {
             System.out.printf("Exception: %s\n",e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -90,5 +92,12 @@ public class DBUserService {
     public ResponseEntity<UserDto> getUser() throws ParseException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok().body(userDto.DBUserToObjectUser(DBUserRepository.findByEmail(username)));
+    }
+
+    private int getANewId(){
+        int cursor = 1;
+        while(DBUserRepository.existsById(cursor))
+            cursor++;
+        return cursor;
     }
 }

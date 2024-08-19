@@ -4,18 +4,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.chatop.DTO.RentalDto;
+import com.chatop.dto.RentalDto;
 import com.chatop.model.DBRentals;
-import com.chatop.model.JwtMessage;
-import com.chatop.model.JwtRentals;
+import com.chatop.model.responses.JwtResponse_Message;
+import com.chatop.model.responses.JwtResponse_RentalMessage;
+import com.chatop.model.responses.JwtResponse_Rentals;
 import com.chatop.repository.DBRentalsRepository;
+import com.chatop.repository.DBUserRepository;
 
 @Service
 public class DBRentalsService {
@@ -23,12 +26,16 @@ public class DBRentalsService {
     @Autowired
     private DBRentalsRepository DBRentalsRepository;
 
-    public ResponseEntity<?> getRentals(){
-        return ResponseEntity.ok().body( new JwtRentals(DBRentalsRepository.findAll()));
-    }
+    @Autowired
+    private DBUserRepository dbUserRepository;
 
-    public Optional<DBRentals> getRentalById(Integer Id){
-        return DBRentalsRepository.findById(Id);
+    @Autowired
+    private RentalDto rentalDto;
+
+    private int previousGetRentalId = -1;
+
+    public ResponseEntity<?> getRentals(){
+        return ResponseEntity.ok().body( new JwtResponse_Rentals(DBRentalsRepository.findAll()));
     }
 
     public void addRentals(DBRentals DBRentals){
@@ -41,23 +48,26 @@ public class DBRentalsService {
 
     public ResponseEntity<?> updateRental(String id, String name, int surface, int price, String description){
         
-        DBRentals rental = new DBRentals(   name,
+        DBRentals rental = new DBRentals(   DBRentalsRepository.findById(Integer.parseInt(id)).getId(),
+                                            name,
                                             surface,
                                             price,
                                             DBRentalsRepository.findById(Integer.parseInt(id)).getPicture(),
                                             description,
+                                            DBRentalsRepository.findById(Integer.parseInt(id)).getOwner_id(),
                                             DBRentalsRepository.findById(Integer.parseInt(id)).getCreated_at(),
                                             LocalDate.now().toString());
          
         rental.setId(Integer.parseInt(id));
         DBRentalsRepository.save(rental);
 
-        return ResponseEntity.ok().body(new JwtMessage("Rental updated !"));
+        return ResponseEntity.ok().body(new JwtResponse_Message("Rental updated !"));
     }
         
 
-    public ResponseEntity<?> getRentalsById(int id) {
-        return ResponseEntity.ok().body(getRentalById(id));
+    public ResponseEntity<?> getRentalsById(int id) throws ParseException {
+        previousGetRentalId = id;
+        return ResponseEntity.ok().body(rentalDto.DBRentalToObjectRental(DBRentalsRepository.findById(id)));
     }
 
     public ResponseEntity<?> createRental(  String name,
@@ -66,35 +76,48 @@ public class DBRentalsService {
                                             String description,
                                             MultipartFile picture){
         String picturePath = savePicture(picture);
-        DBRentals rental = new DBRentals(   name,
+        System.out.printf("picturepath: %s\n",picturePath);
+        DBRentals rental = new DBRentals(   getANewId(),
+                                            name,
                                             surface,
                                             price,
                                             picturePath,
                                             description,
+                                            getAuthenticatedUserId(),
                                             LocalDate.now().toString(),
                                             LocalDate.now().toString());
-
+        System.out.printf("picturepath from rental: %s\n",rental.getPicture());
         addRentals(rental);
 
-        return ResponseEntity.ok().body(new JwtMessage("Rental created !"));
+        return ResponseEntity.ok().body(new JwtResponse_Message("Rental created !"));
     }
 
     private String savePicture(MultipartFile picture) {
-        // Vous pouvez définir le répertoire de stockage pour les images
         String directory = "uploads/";
 
         try {
-            // Générer un nom de fichier unique
             String filename = picture.getOriginalFilename();
             Path filepath = Paths.get(directory, filename);
-
-            // Sauvegarder l'image sur le disque
             Files.write(filepath, picture.getBytes());
-
-            // Retourner le chemin du fichier (relatif ou absolu selon vos besoins)
             return filepath.toString();
         } catch (IOException e) {
             throw new RuntimeException("Failed to store the picture", e);
         }
+    }
+
+    private int getAuthenticatedUserId(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return dbUserRepository.findByEmail(username).getId();
+    }
+
+    private int getANewId(){
+        int cursor = 1;
+        while(DBRentalsRepository.existsById(cursor))
+            cursor++;
+        return cursor;
+    }
+
+    public ResponseEntity<?> postMessage(String entity) {
+        return ResponseEntity.ok().body(new JwtResponse_RentalMessage(entity, getAuthenticatedUserId(), previousGetRentalId));
     }
 }
