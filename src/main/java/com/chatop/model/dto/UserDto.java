@@ -1,4 +1,4 @@
-package com.chatop.dto;
+package com.chatop.model.dto;
 
 import org.springframework.context.annotation.Configuration;
 import java.text.ParseException;

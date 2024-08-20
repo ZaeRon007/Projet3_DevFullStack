@@ -1,8 +1,6 @@
-package com.chatop.dto;
+package com.chatop.model.dto;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -17,8 +15,8 @@ public class RentalDto {
     String name;
     int surface;
     int price;
-    // Resource picture;
-    byte[] picture;
+    // byte[] picture;
+    String picture;
     String description;
     int owner_id;
     String created_at;
@@ -30,8 +28,8 @@ public class RentalDto {
                         String name,
                         int surface,
                         int price,
-                        // Resource picture,
-                        byte[] picture,
+                        // byte[] picture,
+                        String picture,
                         String description,
                         int owner_id,
                         String created_at,
@@ -54,7 +52,8 @@ public class RentalDto {
                                 dbRental.getName(), 
                                 dbRental.getSurface(),
                                 dbRental.getPrice(),
-                                getRentalImage(dbRental.getPicture()),
+                                // getRentalImage(dbRental.getPicture()),
+                                dbRental.getPicture(),
                                 dbRental.getDescription(), 
                                 dbRental.getOwner_id(),
                                 dbRental.getCreated_at(), 
@@ -93,7 +92,8 @@ public class RentalDto {
                                     dbRentals.getName(),
                                     dbRentals.getSurface(),
                                     dbRentals.getPrice(),
-                                    getRentalImage(dbRentals.getPicture()),
+                                    // getRentalImage(dbRentals.getPicture()),
+                                    dbRentals.getPicture(),
                                     dbRentals.getDescription(),
                                     dbRentals.getOwner_id(),
                                     dbRentals.getCreated_at(),
@@ -103,8 +103,8 @@ public class RentalDto {
     }
 
 
-    private static byte[] getRentalImage(String path) throws IOException{
-        File imgPath = new File(path);
-        return Files.readAllBytes(imgPath.toPath());
-    }
+    // private static byte[] getRentalImage(String path) throws IOException{
+    //     File imgPath = new File(path);
+    //     return Files.readAllBytes(imgPath.toPath());
+    // }
 }

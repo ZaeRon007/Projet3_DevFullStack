@@ -2,7 +2,8 @@ package com.chatop.model.responses;
 
 import java.util.ArrayList;
 
-import com.chatop.dto.RentalDto;
+import com.chatop.model.dto.RentalDto;
+
 import lombok.Data;
 
 @Data

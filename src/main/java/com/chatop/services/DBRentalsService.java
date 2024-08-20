@@ -12,8 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.chatop.dto.RentalDto;
 import com.chatop.model.DBRentals;
+import com.chatop.model.dto.RentalDto;
 import com.chatop.model.responses.JwtResponse_Message;
 import com.chatop.model.responses.JwtResponse_RentalMessage;
 import com.chatop.model.responses.JwtResponse_Rentals;
@@ -31,6 +31,9 @@ public class DBRentalsService {
 
     @Autowired
     private RentalDto rentalDto;
+
+    @Autowired
+    private S3Service s3Service;
 
     private int previousGetRentalId = -1;
 
@@ -75,19 +78,30 @@ public class DBRentalsService {
                                             int price,
                                             String description,
                                             MultipartFile picture){
-        String picturePath = savePicture(picture);
-        System.out.printf("picturepath: %s\n",picturePath);
-        DBRentals rental = new DBRentals(   getANewId(),
-                                            name,
-                                            surface,
-                                            price,
-                                            picturePath,
-                                            description,
-                                            getAuthenticatedUserId(),
-                                            LocalDate.now().toString(),
-                                            LocalDate.now().toString());
-        System.out.printf("picturepath from rental: %s\n",rental.getPicture());
-        addRentals(rental);
+        String UrlPicture = "";
+        try {
+            String directory = "/home/julien/Documents/Projet3_DevFullStack/Projet3_DevFullStack-Back/src/main/resources/static/public/";
+
+            String filename = picture.getOriginalFilename();
+            Path filepath = Paths.get(directory, filename);
+
+            UrlPicture = s3Service.uploadFile(filepath, filename);
+            
+            DBRentals rental = new DBRentals(   getANewId(),
+                                                name,
+                                                surface,
+                                                price,
+                                                UrlPicture,
+                                                description,
+                                                getAuthenticatedUserId(),
+                                                LocalDate.now().toString(),
+                                                LocalDate.now().toString());
+            System.out.printf("picturepath from rental: %s\n",rental.getPicture());
+            addRentals(rental);
+        } catch (Exception e) {
+            System.out.printf("Error uploading file: %s\n",e);
+        }
+
 
         return ResponseEntity.ok().body(new JwtResponse_Message("Rental created !"));
     }
