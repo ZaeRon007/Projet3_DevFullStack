@@ -6,7 +6,6 @@ import lombok.Data;
 public class JwtResponse_Token {
     private String token;
 
-    // Constructeur
     public JwtResponse_Token(String token) {
         this.token = token;
     }

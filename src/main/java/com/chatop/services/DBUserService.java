@@ -10,11 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.chatop.model.DBUser;
 import com.chatop.model.dto.UserDto;
 import com.chatop.model.responses.JwtResponse_Token;
-import com.chatop.repository.DBRentalsRepository;
 import com.chatop.repository.DBUserRepository;
 
 @Service

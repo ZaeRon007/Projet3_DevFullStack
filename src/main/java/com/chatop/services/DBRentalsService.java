@@ -1,7 +1,6 @@
 package com.chatop.services;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.chatop.model.DBRentals;
 import com.chatop.model.dto.RentalDto;
 import com.chatop.model.responses.JwtResponse_Message;
@@ -96,26 +94,10 @@ public class DBRentalsService {
                                                 getAuthenticatedUserId(),
                                                 LocalDate.now().toString(),
                                                 LocalDate.now().toString());
-            System.out.printf("picturepath from rental: %s\n",rental.getPicture());
             addRentals(rental);
+            return ResponseEntity.ok().body(new JwtResponse_Message("Rental created !"));
         } catch (Exception e) {
-            System.out.printf("Error uploading file: %s\n",e);
-        }
-
-
-        return ResponseEntity.ok().body(new JwtResponse_Message("Rental created !"));
-    }
-
-    private String savePicture(MultipartFile picture) {
-        String directory = "uploads/";
-
-        try {
-            String filename = picture.getOriginalFilename();
-            Path filepath = Paths.get(directory, filename);
-            Files.write(filepath, picture.getBytes());
-            return filepath.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to store the picture", e);
+            return ResponseEntity.badRequest().body(e);
         }
     }
 

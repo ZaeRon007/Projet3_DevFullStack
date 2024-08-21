@@ -15,7 +15,6 @@ public class RentalDto {
     String name;
     int surface;
     int price;
-    // byte[] picture;
     String picture;
     String description;
     int owner_id;
@@ -28,7 +27,6 @@ public class RentalDto {
                         String name,
                         int surface,
                         int price,
-                        // byte[] picture,
                         String picture,
                         String description,
                         int owner_id,
@@ -52,7 +50,6 @@ public class RentalDto {
                                 dbRental.getName(), 
                                 dbRental.getSurface(),
                                 dbRental.getPrice(),
-                                // getRentalImage(dbRental.getPicture()),
                                 dbRental.getPicture(),
                                 dbRental.getDescription(), 
                                 dbRental.getOwner_id(),
@@ -92,7 +89,6 @@ public class RentalDto {
                                     dbRentals.getName(),
                                     dbRentals.getSurface(),
                                     dbRentals.getPrice(),
-                                    // getRentalImage(dbRentals.getPicture()),
                                     dbRentals.getPicture(),
                                     dbRentals.getDescription(),
                                     dbRentals.getOwner_id(),
@@ -101,10 +97,4 @@ public class RentalDto {
         }
         return res;
     }
-
-
-    // private static byte[] getRentalImage(String path) throws IOException{
-    //     File imgPath = new File(path);
-    //     return Files.readAllBytes(imgPath.toPath());
-    // }
 }

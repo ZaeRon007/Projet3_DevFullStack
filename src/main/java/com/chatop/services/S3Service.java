@@ -47,8 +47,6 @@ public class S3Service {
                     .acl(ObjectCannedACL.PUBLIC_READ)
                     .build();
 
-            System.out.printf("Filepath: %s\n",filePath);
-
             s3Client.putObject(putObjectRequest, filePath);
 
             URI url = new URI("https://" + bucketName + ".s3." +  rg + ".amazonaws.com/" + fileName);
@@ -60,8 +58,6 @@ public class S3Service {
 
     public String getImageUrl(String imageName) {
         try {
-            // Par exemple, vous pouvez avoir l'image déjà dans un dossier local
-            // et l'envoyer à S3 ici. Par simplicité, utilisons une image nommée localement.
             Path imagePath = Path.of("/resources/static/public/", imageName);
             return uploadFile(imagePath, imageName);
         } catch (Exception e) {
