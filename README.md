@@ -1,11 +1,23 @@
-# Main Branch
+# Back-end :
 
-## Setup : 
+## How to launch project : 
 
-### Front : 
+You need to run `mvn spring-boot:run`. 
+The application is built to run on port `3001`.
 
-To setup front, you need to run `git checkout Projet3-front`
+You can test routes via POSTMAN on port `3001` on target `http://localhost:3001/`.
 
-### Back : 
+# Documentation
 
-To setup back, you need to run `git checkout Projet3-back`
+## Routes : 
+
+We implemented SwaggerUI which show all routes from our project. You can access it with Url `http://localhost:3001/swagger-ui/index.html#/`
+
+## Software : 
+
+For this project we use : 
+
+* database : MySql
+* documentation : SwaggerUI
+* Architecture : spring-boot & maven
+* host pictures : AWS S3 (bucket)
