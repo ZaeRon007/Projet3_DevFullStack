@@ -1,16 +1,18 @@
 package com.chatop.model;
 
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "rentals")
 public class DBRentals {
@@ -24,45 +26,43 @@ public class DBRentals {
     private String name;
 
     @Column(name = "surface")
-    private int surface;
+    private DecimalFormat surface;
     
     @Column(name = "price")
-    private int price;
+    private DecimalFormat price;
 
     @Column(name = "picture")
     private String picture;
     
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 2000)
     private String description;
     
     @Column(name = "owner_id")
     private int owner_id;
     
     @Column(name = "created_at")
-    private String created_at;
+    private Timestamp created_at;
     
     @Column(name = "updated_at")
-    private String updated_at;
+    private Timestamp updated_at;
 
     public DBRentals(){}
 
-    public DBRentals(   int id,
-                        String name,
-                        int surface,
-                        int price,
+    public DBRentals(   String name,
+                        DecimalFormat surface,
+                        DecimalFormat price,
                         String picture,
                         String description,
-                        int owner_id,
-                        String created_at,
-                        String updated_at){
+                        // int owner_id,
+                        Timestamp created_at,
+                        Timestamp updated_at){
         
-        this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
         this.description = description;
-        this.owner_id = owner_id;
+        // this.owner_id = owner_id;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }

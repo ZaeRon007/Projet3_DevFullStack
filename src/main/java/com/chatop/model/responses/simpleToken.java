@@ -1,12 +1,13 @@
 package com.chatop.model.responses;
 
+
 import lombok.Data;
 
 @Data
-public class JwtResponse_Token {
+public class simpleToken {
     private String token;
 
-    public JwtResponse_Token(String token) {
+    public simpleToken(String token) {
         this.token = token;
     }
 }

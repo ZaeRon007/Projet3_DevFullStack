@@ -1,5 +1,6 @@
 package com.chatop.services;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.chatop.model.DBUser;
 import com.chatop.model.dto.UserDto;
-import com.chatop.model.responses.JwtResponse_Token;
+import com.chatop.model.responses.simpleToken;
 import com.chatop.repository.DBUserRepository;
 
 @Service
@@ -42,13 +43,13 @@ public class DBUserService {
     }
 
     public DBUser createUser(DBUser DBUser){
-        DBUser userToAdd = new DBUser(  getANewId(),
-                                        DBUser.getName(),
+        DBUser userToAdd = new DBUser(  DBUser.getName(),
                                         DBUser.getEmail(),
-                                        LocalDate.now().toString(),
-                                        LocalDate.now().toString(),
-                                        PasswordEncoder.encode(DBUser.getPassword()),
-                                        null);
+                                        new Timestamp(Long.parseLong(LocalDate.now().toString())),
+                                        new Timestamp(Long.parseLong(LocalDate.now().toString()))
+                                        // PasswordEncoder.encode(DBUser.getPassword())
+                                        );
+        userToAdd.setPassword(PasswordEncoder.encode(DBUser.getPassword()));
         return userToAdd;
     }
 
@@ -65,10 +66,9 @@ public class DBUserService {
             return ResponseEntity.badRequest().body("Username already exist");
         }
         DBUser userToAdd = createUser(inputUser);
-        userToAdd.setToken(jwtService.generateToken(userToAdd));
         DBUserRepository.save(userToAdd);
         
-        return ResponseEntity.ok(new JwtResponse_Token(userToAdd.getToken()));
+        return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));
     }
 
     public ResponseEntity<?> login(DBUser inputUser) {
@@ -76,11 +76,10 @@ public class DBUserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inputUser.getEmail(), inputUser.getPassword()));
 
             DBUser userToAdd = DBUserRepository.findByEmail(inputUser.getEmail());
-            userToAdd.setToken(jwtService.generateToken(userToAdd));
-            userToAdd.setUpdated_at(LocalDate.now().toString());
+            userToAdd.setUpdated_at(new Timestamp(Long.parseLong(LocalDate.now().toString())));
             DBUserRepository.save(userToAdd);
             
-            return ResponseEntity.ok(new JwtResponse_Token(userToAdd.getToken()));
+            return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));
         } catch (Exception e) {
             System.out.printf("Exception: %s\n",e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -90,13 +89,6 @@ public class DBUserService {
     public ResponseEntity<UserDto> getUser() throws ParseException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok().body(userDto.DBUserToObjectUser(DBUserRepository.findByEmail(username)));
-    }
-
-    private int getANewId(){
-        int cursor = 1;
-        while(DBUserRepository.existsById(cursor))
-            cursor++;
-        return cursor;
     }
 
     public ResponseEntity<?> getUserDtoById(String id) throws NumberFormatException, ParseException {

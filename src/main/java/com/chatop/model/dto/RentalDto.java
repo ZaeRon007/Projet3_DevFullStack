@@ -1,6 +1,8 @@
 package com.chatop.model.dto;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -11,72 +13,66 @@ import lombok.Data;
 @Data
 @Configuration
 public class RentalDto {
-    int id;
     String name;
-    int surface;
-    int price;
+    DecimalFormat surface;
+    DecimalFormat price;
     String picture;
     String description;
-    int owner_id;
-    String created_at;
-    String updated_at;
+    // int owner_id;
+    Timestamp created_at;
+    Timestamp updated_at;
 
     public RentalDto(){}
     
-    public RentalDto(   int id,
-                        String name,
-                        int surface,
-                        int price,
+    public RentalDto(   String name,
+                        DecimalFormat surface,
+                        DecimalFormat price,
                         String picture,
                         String description,
-                        int owner_id,
-                        String created_at,
-                        String updated_at){
+                        // int owner_id,
+                        Timestamp created_at,
+                        Timestamp updated_at){
         
-        this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
         this.description = description;
-        this.owner_id = owner_id;
+        // this.owner_id = owner_id;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
 
     public RentalDto DBRentalToObjectRental( DBRentals  dbRental) throws ParseException, IOException{
-        return new RentalDto(   dbRental.getId(),
-                                dbRental.getName(), 
+        return new RentalDto(  dbRental.getName(), 
                                 dbRental.getSurface(),
                                 dbRental.getPrice(),
                                 dbRental.getPicture(),
                                 dbRental.getDescription(), 
-                                dbRental.getOwner_id(),
+                                // dbRental.getOwner_id(),
                                 dbRental.getCreated_at(), 
                                 dbRental.getUpdated_at());
     }
 
     public DBRentals ObjectRentalToDBRental( RentalDto RentalDto){
-        return new DBRentals(   RentalDto.getId(),
-                                RentalDto.getName(), 
+        return new DBRentals(   RentalDto.getName(), 
                                 RentalDto.getSurface(),
                                 RentalDto.getPrice(),
                                 RentalDto.getPicture().toString(),
                                 RentalDto.getDescription(), 
-                                RentalDto.getOwner_id(),
+                                // RentalDto.getOwner_id(),
                                 RentalDto.getCreated_at(), 
                                 RentalDto.getUpdated_at());
     }
 
     public DBRentals OptionnalDBRentalsToDBRentals(Optional<DBRentals> rentals){
-        return new DBRentals(   rentals.get().getId(),
-                                rentals.get().getName(),
+        return new DBRentals(   rentals.get().getName(),
                                 rentals.get().getSurface(),
                                 rentals.get().getPrice(),
                                 rentals.get().getPicture(),
                                 rentals.get().getDescription(),
-                                rentals.get().getOwner_id(),
+                                // rentals.get().getOwner_id(),
                                 rentals.get().getCreated_at(),
                                 rentals.get().getUpdated_at());
     }
@@ -85,13 +81,12 @@ public class RentalDto {
         ArrayList<RentalDto> res = new ArrayList<>(); 
 
         for (DBRentals dbRentals : rentals) {
-            res.add(new RentalDto(  dbRentals.getId(),
-                                    dbRentals.getName(),
+            res.add(new RentalDto( dbRentals.getName(),
                                     dbRentals.getSurface(),
                                     dbRentals.getPrice(),
                                     dbRentals.getPicture(),
                                     dbRentals.getDescription(),
-                                    dbRentals.getOwner_id(),
+                                    // dbRentals.getOwner_id(),
                                     dbRentals.getCreated_at(),
                                     dbRentals.getUpdated_at()));
         }

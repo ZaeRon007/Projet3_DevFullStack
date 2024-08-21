@@ -31,8 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-
 .mvn
-uploads/
 .env
 src/main/resources/static/public

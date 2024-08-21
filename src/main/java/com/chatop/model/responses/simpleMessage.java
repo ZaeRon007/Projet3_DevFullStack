@@ -3,10 +3,10 @@ package com.chatop.model.responses;
 import lombok.Data;
 
 @Data
-public class JwtResponse_Message {
+public class simpleMessage {
     private String message;
 
-    public JwtResponse_Message(String message) {
+    public simpleMessage(String message) {
         this.message = message;
     }
 }

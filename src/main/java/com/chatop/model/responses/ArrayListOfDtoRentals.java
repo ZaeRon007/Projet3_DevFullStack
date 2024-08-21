@@ -7,10 +7,10 @@ import com.chatop.model.dto.RentalDto;
 import lombok.Data;
 
 @Data
-public class JwtResponse_Rentals {
+public class ArrayListOfDtoRentals {
     ArrayList<RentalDto> rentals;
 
-    public JwtResponse_Rentals( ArrayList<RentalDto> iterable){
+    public ArrayListOfDtoRentals( ArrayList<RentalDto> iterable){
         this.rentals = iterable;
     }
 }
