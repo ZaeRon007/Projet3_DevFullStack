@@ -1,7 +1,6 @@
 package com.chatop.model.dto;
 
 import org.springframework.context.annotation.Configuration;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import com.chatop.model.DBUser;

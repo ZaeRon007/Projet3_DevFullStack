@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.chatop.model.DBMessages;
 
 @Repository
-public class DBMessagesRepository extends CrudRepository<DBMessages, Integer> {
+public interface DBMessagesRepository extends CrudRepository<DBMessages, Integer> {
 
 }

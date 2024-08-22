@@ -1,7 +1,6 @@
 package com.chatop.model.dto;
 
 import com.chatop.model.DBMessages;
-
 import lombok.Data;
 
 @Data

@@ -37,11 +37,11 @@ public class DBMessages {
     public DBMessages(){}
 
     public DBMessages(  int id,
-                    int rental_id,
-                    int user_id,
-                    String message,
-                    Timestamp created_at,
-                    Timestamp updated_at){
+                        int rental_id,
+                        int user_id,
+                        String message,
+                        Timestamp created_at,
+                        Timestamp updated_at){
         this.id = id;
         this.rental_id = rental_id;
         this.user_id = user_id;
