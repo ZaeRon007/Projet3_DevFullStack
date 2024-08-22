@@ -1,13 +1,16 @@
 package com.chatop.services;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.FloatBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +31,9 @@ public class DBRentalsService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Value("${picture.directory}")
+    private String directory;
 
     public ResponseEntity<?> getRentals() throws IOException{
         return ResponseEntity.ok().body( new ArrayListOfDtoRentals(rentalDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll())));
@@ -59,26 +65,31 @@ public class DBRentalsService {
     }
 
     public ResponseEntity<?> createRental(  String name,
-                                            DecimalFormat surface,
-                                            DecimalFormat price,
+                                            BigDecimal surface,
+                                            BigDecimal price,
                                             String description,
                                             MultipartFile picture){
         String UrlPicture = "";
         try {
-            String directory = "/home/julien/Documents/Projet3_DevFullStack/Projet3_DevFullStack-Back/src/main/resources/static/public/";
-
             String filename = picture.getOriginalFilename();
             Path filepath = Paths.get(directory, filename);
 
             UrlPicture = s3Service.uploadFile(filepath, filename);
+            DecimalFormat dfSurface = new DecimalFormat("#.##");
             
+            // dfSurface= new DecimalFormat(surface.toString());
+            DecimalFormat dfPrice = new DecimalFormat("#.##");
+            
+            // dfPrice= new DecimalFormat(price.toString());
+
+            System.out.printf("name: %s surface: %s price: %s UrlPicture: %s\n description: %s\n", name, surface, price, UrlPicture, description);
             DBRentals rental = new DBRentals(   name,
                                                 surface,
                                                 price,
                                                 UrlPicture,
                                                 description,
-                                                new Timestamp(Long.parseLong(LocalDate.now().toString())),
-                                                new Timestamp(Long.parseLong(LocalDate.now().toString())));
+                                                new Timestamp(new Date().getTime()),
+                                                new Timestamp(new Date().getTime()));
             addRentals(rental);
             return ResponseEntity.ok().body(new simpleMessage("Rental created !"));
         } catch (Exception e) {

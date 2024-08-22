@@ -2,7 +2,7 @@ package com.chatop.services;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.time.LocalDate;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +45,8 @@ public class DBUserService {
     public DBUser createUser(DBUser DBUser){
         DBUser userToAdd = new DBUser(  DBUser.getName(),
                                         DBUser.getEmail(),
-                                        new Timestamp(Long.parseLong(LocalDate.now().toString())),
-                                        new Timestamp(Long.parseLong(LocalDate.now().toString()))
+                                        new Timestamp(new Date().getTime()),
+                                        new Timestamp(new Date().getTime())
                                         // PasswordEncoder.encode(DBUser.getPassword())
                                         );
         userToAdd.setPassword(PasswordEncoder.encode(DBUser.getPassword()));
@@ -76,7 +76,7 @@ public class DBUserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inputUser.getEmail(), inputUser.getPassword()));
 
             DBUser userToAdd = DBUserRepository.findByEmail(inputUser.getEmail());
-            userToAdd.setUpdated_at(new Timestamp(Long.parseLong(LocalDate.now().toString())));
+            userToAdd.setUpdated_at(new Timestamp(new Date().getTime()));
             DBUserRepository.save(userToAdd);
             
             return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));

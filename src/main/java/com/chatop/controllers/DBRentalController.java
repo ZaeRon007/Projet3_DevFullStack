@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.chatop.services.DBRentalsService;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class DBRentalController {
     @Autowired
     private DBRentalsService DBRentalsService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getRentals() throws IOException {
         return DBRentalsService.getRentals();
     }
@@ -32,10 +33,10 @@ public class DBRentalController {
         return DBRentalsService.getRentalsById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> createRental(  @RequestParam("name") String name,
-                                            @RequestParam("surface") DecimalFormat surface,
-                                            @RequestParam("price") DecimalFormat price,
+                                            @RequestParam("surface") BigDecimal surface,
+                                            @RequestParam("price") BigDecimal price,
                                             @RequestParam("description") String description,
                                             @RequestParam("picture") MultipartFile picture){
         return DBRentalsService.createRental(   name,
