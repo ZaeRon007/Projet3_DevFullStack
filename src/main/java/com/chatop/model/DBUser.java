@@ -2,6 +2,7 @@ package com.chatop.model;
 
 import jakarta.persistence.Id;
 import java.sql.Timestamp;
+import com.chatop.model.dto.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,23 +30,29 @@ public class DBUser {
     private String password;
 
     @Column(name = "created_at")
-    private Timestamp created_at;
+    private String createdAt;
     
     @Column(name = "updated_at")
-    private Timestamp updated_at;
+    private String updatedAt;
 
     public DBUser(){}
 
     public DBUser(  String name,
                     String email,
-                    Timestamp created_at,
-                    Timestamp updated_at
-                    // String password
+                    String createdAt,
+                    String updatedAt
                     ){
         this.name = name;
         this.email = email;
-        this.created_at = created_at;
-        this.updated_at = updated_at; 
-        // this.password = password;          
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt; 
+    }
+
+    public UserDto ToUserDto() {
+        return new UserDto( this.getId(),
+                            this.getName(), 
+                            this.getEmail(), 
+                            this.getCreatedAt(), 
+                            this.getUpdatedAt());
     }
 }

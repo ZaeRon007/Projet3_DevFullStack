@@ -1,6 +1,9 @@
 package com.chatop.model;
 
 import java.sql.Timestamp;
+
+import com.chatop.model.dto.MessageDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,33 +23,38 @@ public class DBMessages {
     private int id;
     
     @Column(name = "rental_id")
-    private int rental_id;
+    private int rentalId;
 
     @Column(name = "user_id")
-    private int user_id;
+    private int userId;
     
     @Column(name = "message", length = 2000)
     private String message;
 
     @Column(name = "created_at")
-    private Timestamp created_at;
+    private String createdAt;
     
     @Column(name = "updated_at")
-    private Timestamp updated_at;
+    private String updatedAt;
 
     public DBMessages(){}
 
-    public DBMessages(  int id,
-                        int rental_id,
-                        int user_id,
+    public DBMessages(  int rentalId,
+                        int userId,
                         String message,
-                        Timestamp created_at,
-                        Timestamp updated_at){
-        this.id = id;
-        this.rental_id = rental_id;
-        this.user_id = user_id;
+                        String createdAt,
+                        String updatedAt){
+        this.rentalId = rentalId;
+        this.userId = userId;
         this.message = message;          
-        this.created_at = created_at;
-        this.updated_at = updated_at; 
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt; 
     }
+
+    public MessageDto ToMessageDto(){
+        return new MessageDto(  this.getRentalId(),
+                                this.getUserId(),
+                                this.getMessage());
+    }
+
 }

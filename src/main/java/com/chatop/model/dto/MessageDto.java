@@ -1,9 +1,12 @@
 package com.chatop.model.dto;
 
+import org.springframework.context.annotation.Configuration;
 import com.chatop.model.DBMessages;
+import com.chatop.services.TimeService;
 import lombok.Data;
 
 @Data
+@Configuration
 public class MessageDto {
     
     private int rental_id;
@@ -21,9 +24,11 @@ public class MessageDto {
         this.message = message;          
     }
 
-    public MessageDto DBMessagesToMessageDto(DBMessages inDbMessages){
-        return new MessageDto(  inDbMessages.getRental_id(),
-                                inDbMessages.getUser_id(),
-                                inDbMessages.getMessage());
+    public DBMessages ToDBMessages(){
+        return new DBMessages(  this.getRental_id(),
+                                this.getUser_id(),
+                                this.getMessage(),
+                                new TimeService().getTime(),
+                                new TimeService().getTime());
     }
 }

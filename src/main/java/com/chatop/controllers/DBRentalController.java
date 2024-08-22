@@ -2,10 +2,11 @@ package com.chatop.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.chatop.model.dto.RentalDto;
 import com.chatop.services.DBRentalsService;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,18 +43,13 @@ public class DBRentalController {
         return DBRentalsService.createRental(   name,
                                                 surface,
                                                 price,
-                                                description,
-                                                picture);
+                                                picture,
+                                                description);
     }
-
-     
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(  @PathVariable String id, 
-                                            @RequestParam("name") String name,
-                                            @RequestParam("surface") DecimalFormat surface,
-                                            @RequestParam("price") DecimalFormat price,
-                                            @RequestParam("description") String description) {
-        return DBRentalsService.updateRental(id, name, surface, price, description);
+                                            RentalDto rentalDto) {
+        return DBRentalsService.updateRental(id, rentalDto);
     }       
 }

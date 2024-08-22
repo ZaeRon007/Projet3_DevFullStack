@@ -29,9 +29,6 @@ public class DBUserService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDto userDto;
-
-    @Autowired
     private JWTService jwtService;
 
     public DBUserService(JWTService jwtService) {
@@ -45,10 +42,9 @@ public class DBUserService {
     public DBUser createUser(DBUser DBUser){
         DBUser userToAdd = new DBUser(  DBUser.getName(),
                                         DBUser.getEmail(),
-                                        new Timestamp(new Date().getTime()),
-                                        new Timestamp(new Date().getTime())
-                                        // PasswordEncoder.encode(DBUser.getPassword())
-                                        );
+                                        new TimeService().getTime(),
+                                        new TimeService().getTime());
+                                        
         userToAdd.setPassword(PasswordEncoder.encode(DBUser.getPassword()));
         return userToAdd;
     }
@@ -62,7 +58,7 @@ public class DBUserService {
     }
 
     public ResponseEntity<?> register(DBUser inputUser) {
-        if(DBUserRepository.findByEmail(inputUser.getEmail()) != null){
+        if(DBUserRepository.existsByEmail(inputUser.getEmail())){
             return ResponseEntity.badRequest().body("Username already exist");
         }
         DBUser userToAdd = createUser(inputUser);
@@ -76,7 +72,7 @@ public class DBUserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inputUser.getEmail(), inputUser.getPassword()));
 
             DBUser userToAdd = DBUserRepository.findByEmail(inputUser.getEmail());
-            userToAdd.setUpdated_at(new Timestamp(new Date().getTime()));
+            userToAdd.setUpdatedAt(new TimeService().getTime());
             DBUserRepository.save(userToAdd);
             
             return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));
@@ -88,10 +84,10 @@ public class DBUserService {
 
     public ResponseEntity<UserDto> getUser() throws ParseException {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.ok().body(userDto.DBUserToObjectUser(DBUserRepository.findByEmail(username)));
+        return ResponseEntity.ok().body((DBUserRepository.findByEmail(username)).ToUserDto());
     }
 
     public ResponseEntity<?> getUserDtoById(String id) throws NumberFormatException, ParseException {
-        return ResponseEntity.ok().body(userDto.DBUserToObjectUser(DBUserRepository.findById(Integer.parseInt(id))));
+        return ResponseEntity.ok().body((DBUserRepository.findById(Integer.parseInt(id)).ToUserDto()));
     }
 }

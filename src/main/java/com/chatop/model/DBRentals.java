@@ -1,7 +1,7 @@
 package com.chatop.model;
 
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import com.chatop.model.dto.RentalDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +24,10 @@ public class DBRentals {
     private String name;
 
     @Column(name = "surface")
-    private DecimalFormat surface;
+    private BigDecimal surface;
     
     @Column(name = "price")
-    private DecimalFormat price;
+    private BigDecimal price;
 
     @Column(name = "picture")
     private String picture;
@@ -36,32 +36,44 @@ public class DBRentals {
     private String description;
     
     @Column(name = "owner_id")
-    private int owner_id;
+    private int ownerId;
     
     @Column(name = "created_at")
-    private Timestamp created_at;
+    private String createdAt;
     
     @Column(name = "updated_at")
-    private Timestamp updated_at;
+    private String updatedAt;
 
     public DBRentals(){}
 
     public DBRentals(   String name,
-                        DecimalFormat surface,
-                        DecimalFormat price,
+                        BigDecimal surface,
+                        BigDecimal price,
                         String picture,
                         String description,
-                        // int owner_id,
-                        Timestamp created_at,
-                        Timestamp updated_at){
+                        int ownerId,
+                        String createdAt,
+                        String updatedAt){
         
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
         this.description = description;
-        // this.owner_id = owner_id;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.ownerId = ownerId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public RentalDto ToRentalDto(){
+        return new RentalDto(   this.getId(),
+                                this.getName(), 
+                                this.getSurface(),
+                                this.getPrice(),
+                                this.getPicture(),
+                                this.getDescription(), 
+                                this.getOwnerId(),
+                                this.getCreatedAt(), 
+                                this.getUpdatedAt());
     }
 }

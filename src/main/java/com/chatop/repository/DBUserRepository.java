@@ -11,4 +11,5 @@ public interface DBUserRepository extends CrudRepository<DBUser, Integer>{
     DBUser findByEmail(String email);
     DBUser findByName(String name);
     DBUser findById(int id);
+    boolean existsByEmail(String email);
 }

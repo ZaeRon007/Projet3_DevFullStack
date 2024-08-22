@@ -1,49 +1,39 @@
 package com.chatop.model.dto;
 
-import org.springframework.context.annotation.Configuration;
 import java.sql.Timestamp;
-import java.text.ParseException;
+
+import org.springframework.context.annotation.Configuration;
+
 import com.chatop.model.DBUser;
 import lombok.Data;
 
 @Data
 @Configuration
 public class UserDto {
+    int id;
     String name;
     String email;
-    Timestamp created_at;
-    Timestamp updated_at;
-    // String password;
+    String createdAt;
+    String updatedAt;
 
     public UserDto(){}
 
-    public UserDto( String name,
+    public UserDto( int id,
+                    String name,
                     String email,
-                    Timestamp created_at,
-                    Timestamp updated_at
-                    // String password
-                    ){
+                    String createdAt,
+                    String updatedAt){
+        this.id = id;
         this.name = name;
         this.email = email;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-        // this.password = password;
-    }
-    
-    public UserDto DBUserToObjectUser( DBUser  dbuser) throws ParseException{
-        return new UserDto( dbuser.getName(), 
-                            dbuser.getEmail(), 
-                            dbuser.getCreated_at(), 
-                            dbuser.getUpdated_at()
-                            // dbuser.getPassword()
-                            );
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public DBUser ObjectUserToDBUser( UserDto userDto){
-        return new DBUser(  userDto.getName(),
-                            userDto.getEmail(),
-                            userDto.getCreated_at(),
-                            userDto.getUpdated_at());
-                            // userDto.getPassword());
+    public DBUser ToDBUser(){
+        return new DBUser(  this.getName(),
+                            this.getEmail(),
+                            this.getCreatedAt(),
+                            this.getUpdatedAt());
     }
 }
