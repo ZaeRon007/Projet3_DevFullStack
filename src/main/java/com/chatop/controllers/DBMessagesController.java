@@ -2,8 +2,6 @@ package com.chatop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +21,4 @@ public class DBMessagesController {
         return dbMessagesService.postMessage(entity);
     }
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<?> getMethodName(@PathVariable String id) {
-    //     return dbMessagesService.getMessage(id);
-    // }
-    
 }

@@ -1,9 +1,6 @@
 package com.chatop.model;
 
-import java.sql.Timestamp;
-
 import com.chatop.model.dto.MessageDto;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

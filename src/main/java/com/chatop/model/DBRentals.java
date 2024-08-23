@@ -1,7 +1,7 @@
 package com.chatop.model;
 
 import java.math.BigDecimal;
-import com.chatop.model.dto.RentalDto;
+import com.chatop.model.dto.RentalSDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -65,8 +65,8 @@ public class DBRentals {
         this.updatedAt = updatedAt;
     }
 
-    public RentalDto ToRentalDto(){
-        return new RentalDto(   this.getId(),
+    public RentalSDto ToRentalDto(){
+        return new RentalSDto(   this.getId(),
                                 this.getName(), 
                                 this.getSurface(),
                                 this.getPrice(),

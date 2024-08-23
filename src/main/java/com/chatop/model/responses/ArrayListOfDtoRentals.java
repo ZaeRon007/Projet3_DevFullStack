@@ -2,15 +2,15 @@ package com.chatop.model.responses;
 
 import java.util.ArrayList;
 
-import com.chatop.model.dto.RentalDto;
+import com.chatop.model.dto.RentalSDto;
 
 import lombok.Data;
 
 @Data
 public class ArrayListOfDtoRentals {
-    ArrayList<RentalDto> rentals;
+    ArrayList<RentalSDto> rentals;
 
-    public ArrayListOfDtoRentals( ArrayList<RentalDto> iterable){
+    public ArrayListOfDtoRentals( ArrayList<RentalSDto> iterable){
         this.rentals = iterable;
     }
 }

@@ -3,7 +3,6 @@ package com.chatop.model.dto;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 import com.chatop.model.DBRentals;
@@ -11,38 +10,49 @@ import lombok.Data;
 
 @Data
 @Configuration
-public class RentalDto {
+public class RentalSDto {
     int id;
     String name;
     BigDecimal surface;
     BigDecimal price;
-    MultipartFile pictureFile;
     String picture;
     String description;
-    int ownerId;
-    String createdAt;
-    String updatedAt;
+    int owner_id;
+    String created_at;
+    String updated_at;
 
-    public RentalDto(){}
+    public RentalSDto(){}
+
+    public RentalSDto(  String name,
+                        BigDecimal surface,
+                        BigDecimal price,
+                        String picture,
+                        String description){
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.picture = picture;
+        this.description = description;
+    }
     
-    public RentalDto(   int id,
+    public RentalSDto(   int id,
                         String name,
                         BigDecimal surface,
                         BigDecimal price,
                         String picture,
                         String description,
-                        int ownerId,
-                        String createdAt,
-                        String updatedAt){
+                        int owner_id,
+                        String created_at,
+                        String updated_at){
         this.id = id;
         this.name = name;
         this.surface = surface;
         this.price = price;
         this.picture = picture;
         this.description = description;
-        this.ownerId = ownerId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.owner_id = owner_id;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public DBRentals ToDBRental(){
@@ -51,9 +61,9 @@ public class RentalDto {
                                 this.getPrice(),
                                 this.getPicture(),
                                 this.getDescription(), 
-                                this.getOwnerId(),
-                                this.getCreatedAt(), 
-                                this.getUpdatedAt());
+                                this.getOwner_id(),
+                                this.getCreated_at(), 
+                                this.getUpdated_at());
     }
 
     public DBRentals ToDBRentals(Optional<DBRentals> rentals){
@@ -62,13 +72,13 @@ public class RentalDto {
                                 rentals.get().getPrice(),
                                 rentals.get().getPicture(),
                                 rentals.get().getDescription(),
-                                rentals.get().getOwnerId(),
-                                rentals.get().getCreatedAt(),
-                                rentals.get().getUpdatedAt());
+                                rentals.get().getOwner_id(),
+                                rentals.get().getCreated_at(),
+                                rentals.get().getUpdated_at());
     }
 
-    public ArrayList<RentalDto> IterableDBRentalsToArrayListObjectRentals(Iterable<DBRentals> rentals){
-        ArrayList<RentalDto> res = new ArrayList<>(); 
+    public ArrayList<RentalSDto> IterableDBRentalsToArrayListObjectRentals(Iterable<DBRentals> rentals){
+        ArrayList<RentalSDto> res = new ArrayList<>(); 
 
         for (DBRentals dbRentals : rentals) {
             res.add(dbRentals.ToRentalDto());

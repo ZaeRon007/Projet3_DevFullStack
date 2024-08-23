@@ -1,8 +1,6 @@
 package com.chatop.services;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

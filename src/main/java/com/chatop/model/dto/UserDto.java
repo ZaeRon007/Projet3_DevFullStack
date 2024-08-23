@@ -1,9 +1,6 @@
 package com.chatop.model.dto;
 
-import java.sql.Timestamp;
-
 import org.springframework.context.annotation.Configuration;
-
 import com.chatop.model.DBUser;
 import lombok.Data;
 
@@ -13,27 +10,27 @@ public class UserDto {
     int id;
     String name;
     String email;
-    String createdAt;
-    String updatedAt;
+    String created_at;
+    String updated_at;
 
     public UserDto(){}
 
     public UserDto( int id,
                     String name,
                     String email,
-                    String createdAt,
-                    String updatedAt){
+                    String created_at,
+                    String updated_at){
         this.id = id;
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public DBUser ToDBUser(){
         return new DBUser(  this.getName(),
                             this.getEmail(),
-                            this.getCreatedAt(),
-                            this.getUpdatedAt());
+                            this.getCreated_at(),
+                            this.getUpdated_at());
     }
 }

@@ -1,23 +1,17 @@
 package com.chatop.services;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.chatop.model.DBRentals;
-import com.chatop.model.dto.RentalDto;
+import com.chatop.model.dto.RentalMDto;
+import com.chatop.model.dto.RentalSDto;
 import com.chatop.model.responses.ArrayListOfDtoRentals;
 import com.chatop.model.responses.simpleMessage;
 import com.chatop.repository.DBRentalsRepository;
@@ -36,13 +30,13 @@ public class DBRentalsService {
     private S3Service s3Service;
 
     @Autowired
-    private RentalDto rentalDto;
+    private RentalSDto rentalSDto;
 
     @Value("${picture.directory}")
     private String directory;
 
     public ResponseEntity<?> getRentals() throws IOException{
-        return ResponseEntity.ok().body( new ArrayListOfDtoRentals(rentalDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll())));
+        return ResponseEntity.ok().body( new ArrayListOfDtoRentals(rentalSDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll())));
     }
 
     public void addRentals(DBRentals DBRentals){
@@ -53,7 +47,7 @@ public class DBRentalsService {
         DBRentalsRepository.delete(DBRentals);
     }
 
-    public ResponseEntity<?> updateRental(String id, RentalDto rentalDto){
+    public ResponseEntity<?> updateRental(String id, RentalSDto rentalDto){
         DBRentals dbOne = DBRentalsRepository.findById(Integer.parseInt(id));
         dbOne.setName(rentalDto.getName());
         dbOne.setSurface(rentalDto.getSurface());
@@ -71,30 +65,27 @@ public class DBRentalsService {
         return ResponseEntity.ok().body((DBRentalsRepository.findById(id)).ToRentalDto());
     }
 
-    // public ResponseEntity<?> createRental( RentalDto rentalDto){
-    public ResponseEntity<?> createRental(  String name,
-                                            BigDecimal surface,
-                                            BigDecimal price,
-                                            MultipartFile picture,
-                                            String description){
+    public ResponseEntity<?> createRental( RentalMDto rentalMDto){
+        RentalSDto rentalSDto = rentalMDto.ToSdto();
+
         String UrlPicture = "";
         try {
-            String filename = picture.getOriginalFilename();
+            String filename = rentalSDto.getPicture();
             Path filepath = Paths.get(directory, filename);
             UrlPicture = s3Service.uploadFile(filepath, filename);
 
-            DBRentals rental = new DBRentals(   name,
-                                                surface,
-                                                price,
-                                                UrlPicture,
-                                                description,
-                                                getAuthenticatedUserId(),
-                                                new TimeService().getTime(),
-                                                new TimeService().getTime());
-            addRentals(rental);
+            DBRentals rentalToAdd = new DBRentals(  rentalSDto.getName(),
+                                                    rentalSDto.getSurface(),
+                                                    rentalSDto.getPrice(),
+                                                    UrlPicture,
+                                                    rentalSDto.getDescription(),
+                                                    getAuthenticatedUserId(),
+                                                    new TimeService().getTime(),
+                                                    new TimeService().getTime());
+            addRentals(rentalToAdd);
             return ResponseEntity.ok().body(new simpleMessage("Rental created !"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e);
+            return ResponseEntity.badRequest().body("Bad Request: " + e);
         }
     }
 
