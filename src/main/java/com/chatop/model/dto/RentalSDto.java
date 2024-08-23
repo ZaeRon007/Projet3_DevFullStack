@@ -72,9 +72,9 @@ public class RentalSDto {
                                 rentals.get().getPrice(),
                                 rentals.get().getPicture(),
                                 rentals.get().getDescription(),
-                                rentals.get().getOwner_id(),
-                                rentals.get().getCreated_at(),
-                                rentals.get().getUpdated_at());
+                                rentals.get().getOwnerId(),
+                                rentals.get().getCreatedAt(),
+                                rentals.get().getUpdatedAt());
     }
 
     public ArrayList<RentalSDto> IterableDBRentalsToArrayListObjectRentals(Iterable<DBRentals> rentals){
