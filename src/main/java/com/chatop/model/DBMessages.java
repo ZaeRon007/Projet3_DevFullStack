@@ -1,6 +1,8 @@
 package com.chatop.model;
 
 import com.chatop.model.dto.MessageDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "messages")
+@Schema(description = "Modèle message pour la base de données")
 public class DBMessages {
 
     @Id

@@ -2,6 +2,8 @@ package com.chatop.model;
 
 import java.math.BigDecimal;
 import com.chatop.model.dto.RentalSDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "rentals")
+@Schema(description = "Modèle location pour la base de données")
 public class DBRentals {
 
     @Id

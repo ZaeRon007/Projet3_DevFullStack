@@ -2,6 +2,8 @@ package com.chatop.model;
 
 import jakarta.persistence.Id;
 import com.chatop.model.dto.UserDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "users")
+@Schema(description = "Modèle utilisateur pour la base de données")
 public class DBUser {
 
     @Id
