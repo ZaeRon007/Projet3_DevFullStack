@@ -68,7 +68,7 @@ public class DBRentals {
         this.updatedAt = updatedAt;
     }
 
-    public RentalSDto ToRentalDto(){
+    public RentalSDto ToRentalSDto(){
         return new RentalSDto(   this.getId(),
                                 this.getName(), 
                                 this.getSurface(),

@@ -34,7 +34,7 @@ public class RentalSDto {
         this.description = description;
     }
     
-    public RentalSDto(   int id,
+    public RentalSDto(  int id,
                         String name,
                         BigDecimal surface,
                         BigDecimal price,
@@ -80,7 +80,7 @@ public class RentalSDto {
         ArrayList<RentalSDto> res = new ArrayList<>(); 
 
         for (DBRentals dbRentals : rentals) {
-            res.add(dbRentals.ToRentalDto());
+            res.add(dbRentals.ToRentalSDto());
         }
         return res;
     }

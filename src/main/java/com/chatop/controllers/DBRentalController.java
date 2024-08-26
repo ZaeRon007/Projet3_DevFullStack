@@ -2,7 +2,7 @@ package com.chatop.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 import com.chatop.model.dto.RentalMDto;
-import com.chatop.model.dto.RentalSDto;
+import com.chatop.model.dto.RentalUpdateDto;
 import com.chatop.services.DBRentalsService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +29,6 @@ public class DBRentalController {
     @Operation(
         summary = "Allow user to get all rentals",
         description = "Allow user to pull all rentals from database"
-        // tags = {"get","rentals"}
     )
     @GetMapping("")
     public ResponseEntity<?> getRentals() throws IOException {
@@ -39,7 +38,6 @@ public class DBRentalController {
     @Operation(
         summary = "Allow user to get a particular rental",
         description = "Allow user to pull a rental from database specifying its id"
-        // tags = {"get","rentals", "id"}
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalsById(@PathVariable Integer id) throws ParseException, IOException {
@@ -49,7 +47,6 @@ public class DBRentalController {
     @Operation(
         summary = "Allow user to create a rental",
         description = "Allow user to create a rental specifying its name, surface, price, pictureFile and its description"
-        // tags = {"get","rentals"}
     )
     @PostMapping("")
     public ResponseEntity<?> createRental(RentalMDto rentalMDto){
@@ -59,11 +56,10 @@ public class DBRentalController {
     @Operation(
         summary = "Allow user to update a rental",
         description = "Allow user to update a rental specifying its name, surface, price and its description"
-        // tags = {"get","rentals"}
     )
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(  @PathVariable String id, 
-                                            RentalSDto rentalDto) {
-        return DBRentalsService.updateRental(id, rentalDto);
+                                            RentalUpdateDto rentalUpdateDto) {
+        return DBRentalsService.updateRental(id, rentalUpdateDto);
     }       
 }

@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.chatop.model.DBUser;
 import com.chatop.model.dto.UserDto;
+import com.chatop.model.dto.UserLoginDto;
+import com.chatop.model.dto.UserRegisterDto;
 import com.chatop.model.responses.simpleToken;
 import com.chatop.repository.DBUserRepository;
 
@@ -37,13 +39,13 @@ public class DBUserService {
         return DBUserRepository.findAll();
     }
 
-    public DBUser createUser(DBUser DBUser){
-        DBUser userToAdd = new DBUser(  DBUser.getName(),
-                                        DBUser.getEmail(),
+    public DBUser createUser(UserRegisterDto userRegisterDto){
+        DBUser userToAdd = new DBUser(  userRegisterDto.getName(),
+                                        userRegisterDto.getEmail(),
                                         new TimeService().getTime(),
                                         new TimeService().getTime());
                                         
-        userToAdd.setPassword(PasswordEncoder.encode(DBUser.getPassword()));
+        userToAdd.setPassword(PasswordEncoder.encode(userRegisterDto.getPassword()));
         return userToAdd;
     }
 
@@ -55,21 +57,21 @@ public class DBUserService {
         DBUserRepository.delete(DBuser);
     }
 
-    public ResponseEntity<?> register(DBUser inputUser) {
-        if(DBUserRepository.existsByEmail(inputUser.getEmail())){
+    public ResponseEntity<?> register(UserRegisterDto userRegisterDto) {
+        if(DBUserRepository.existsByEmail(userRegisterDto.getEmail())){
             return ResponseEntity.badRequest().body("Username already exist");
         }
-        DBUser userToAdd = createUser(inputUser);
+        DBUser userToAdd = createUser(userRegisterDto);
         DBUserRepository.save(userToAdd);
         
         return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));
     }
 
-    public ResponseEntity<?> login(DBUser inputUser) {
+    public ResponseEntity<?> login(UserLoginDto userLoginDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inputUser.getEmail(), inputUser.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginDto.getEmail(), userLoginDto.getPassword()));
 
-            DBUser userToAdd = DBUserRepository.findByEmail(inputUser.getEmail());
+            DBUser userToAdd = DBUserRepository.findByEmail(userLoginDto.getEmail());
             userToAdd.setUpdatedAt(new TimeService().getTime());
             DBUserRepository.save(userToAdd);
             

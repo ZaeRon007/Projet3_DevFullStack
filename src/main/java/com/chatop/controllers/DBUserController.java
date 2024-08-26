@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.chatop.model.DBUser;
+import com.chatop.model.dto.UserLoginDto;
+import com.chatop.model.dto.UserRegisterDto;
 import com.chatop.services.DBUserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,27 +29,24 @@ public class DBUserController {
     @Operation(
         summary = "Allow user to register into database",
         description = "Allow user to register specifying name, email and password"
-        // tags = {"post","register","user"}
     )
     @PostMapping("/auth/register")
-    public ResponseEntity<?> userRegister(@RequestBody DBUser inputUser){
-        return DBUserService.register(inputUser);
+    public ResponseEntity<?> userRegister(@RequestBody UserRegisterDto userRegisterDto){
+        return DBUserService.register(userRegisterDto);
     }
 
     @Operation(
         summary = "Allow user to login",
         description = "Allow user to login specifying email and password"
-        // tags = {"post","login","user"}
     )
     @PostMapping("/auth/login")
-    public ResponseEntity<?> loginUser(@RequestBody DBUser inputUser) {
-        return DBUserService.login(inputUser);
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
+        return DBUserService.login(userLoginDto);
     }
 
     @Operation(
         summary = "Allow user see its account informations",
         description = "Display user's informations like name, email, creation date and last update one"
-        // tags = {"get","user"}
     )
     @GetMapping("/auth/me")
     public ResponseEntity<?> getMe() throws ParseException {
@@ -58,7 +56,6 @@ public class DBUserController {
     @Operation(
         summary = "Allow front to get a user by its id",
         description = "Allow front-end to get a user specifying its id"
-        // tags = {"get","user"}
     )
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserDtoById(@PathVariable String id) throws NumberFormatException, ParseException {
