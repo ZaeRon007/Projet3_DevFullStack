@@ -70,7 +70,7 @@ public class DBRentalsService {
         RentalSDto rentalSDto = rentalMDto.ToSdto();
 
         try {
-            String filename = rentalSDto.getPicture();
+            String filename = rentalMDto.getPicture().getOriginalFilename();
             Path filepath = Paths.get(directory, filename);
             String UrlPicture = s3Service.uploadFile(filepath, filename);
 

@@ -48,8 +48,8 @@ public class DBRentalController {
         summary = "Allow user to create a rental",
         description = "Allow user to create a rental specifying its name, surface, price, pictureFile and its description"
     )
-    @PostMapping("")
-    public ResponseEntity<?> createRental(RentalMDto rentalMDto){
+    @PostMapping(path = "", consumes = { "multipart/form-data" })
+    public ResponseEntity<?> createRental( RentalMDto rentalMDto){
         return DBRentalsService.createRental(rentalMDto);
     }
     
