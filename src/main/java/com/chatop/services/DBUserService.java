@@ -64,7 +64,7 @@ public class DBUserService {
         DBUser userToAdd = createUser(userRegisterDto);
         DBUserRepository.save(userToAdd);
         
-        return ResponseEntity.ok(new simpleToken(jwtService.generateToken(userToAdd)));
+        return ResponseEntity.ok().body(null);
     }
 
     public ResponseEntity<?> login(UserLoginDto userLoginDto) {
