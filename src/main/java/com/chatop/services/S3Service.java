@@ -39,6 +39,13 @@ public class S3Service {
         }
     }
 
+    /**
+     * Upload a file to the bucket and return the Url
+     * @param filePath the file path
+     * @param fileName the file name
+     * @return a new Url
+     * @throws URISyntaxException
+     */
     public String uploadFile(Path filePath, String fileName) throws URISyntaxException {
         try {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -56,6 +63,11 @@ public class S3Service {
         }
     }
 
+    /**
+     * Get the Url of the picture contained in the bucket
+     * @param imageName image name at bucket
+     * @return the image Url
+     */
     public String getImageUrl(String imageName) {
         try {
             Path imagePath = Path.of("/resources/static/public/", imageName);

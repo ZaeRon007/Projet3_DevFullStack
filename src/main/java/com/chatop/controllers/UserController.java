@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.chatop.model.dto.UserLoginDto;
 import com.chatop.model.dto.UserRegisterDto;
-import com.chatop.services.DBUserService;
+import com.chatop.model.responses.simpleToken;
+import com.chatop.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,10 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Tag(name = "User Controller", description = "Gesture component for users")
 @RestController
 @RequestMapping("/api")
-public class DBUserController {
+public class UserController {
 
     @Autowired
-    private DBUserService DBUserService;
+    private UserService DBUserService;
 
     @Operation(
         summary = "Allow user to register into database",
@@ -32,7 +33,13 @@ public class DBUserController {
     )
     @PostMapping("/auth/register")
     public ResponseEntity<?> userRegister(@RequestBody UserRegisterDto userRegisterDto){
-        return DBUserService.register(userRegisterDto);
+        String token = DBUserService.register(userRegisterDto);
+
+        if(token.isEmpty())
+            return ResponseEntity.badRequest().body("Username already exist !");
+
+    return ResponseEntity.ok().body(new simpleToken(token));
+
     }
 
     @Operation(
@@ -41,7 +48,13 @@ public class DBUserController {
     )
     @PostMapping("/auth/login")
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
-        return DBUserService.login(userLoginDto);
+        String token = DBUserService.login(userLoginDto);
+
+        if(token.isEmpty())
+            return ResponseEntity.badRequest().body("Username or Password in invalid !");
+
+        return ResponseEntity.ok().body(new simpleToken(token));
+
     }
 
     @Operation(
@@ -50,7 +63,7 @@ public class DBUserController {
     )
     @GetMapping("/auth/me")
     public ResponseEntity<?> getMe() throws ParseException {
-        return DBUserService.getUser();
+        return ResponseEntity.ok().body(DBUserService.getUser());
     }
 
     @Operation(
@@ -59,6 +72,6 @@ public class DBUserController {
     )
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserDtoById(@PathVariable String id) throws NumberFormatException, ParseException {
-        return DBUserService.getUserDtoById(id);
+        return ResponseEntity.ok().body(DBUserService.getUserDtoById(id));
     }   
 }

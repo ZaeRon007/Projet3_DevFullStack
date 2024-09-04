@@ -1,31 +1,30 @@
 package com.chatop.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import com.chatop.model.DBRentals;
+import com.chatop.model.RentalEntity;
 import com.chatop.model.dto.RentalMDto;
 import com.chatop.model.dto.RentalSDto;
 import com.chatop.model.dto.RentalUpdateDto;
-import com.chatop.model.responses.ArrayListOfDtoRentals;
 import com.chatop.model.responses.simpleMessage;
-import com.chatop.repository.DBRentalsRepository;
-import com.chatop.repository.DBUserRepository;
+import com.chatop.repository.RentalsRepository;
+import com.chatop.repository.UserRepository;
 
 @Service
-public class DBRentalsService {
+public class RentalsService {
     
     @Autowired
-    private DBRentalsRepository DBRentalsRepository;
+    private RentalsRepository DBRentalsRepository;
 
     @Autowired
-    private DBUserRepository dbUserRepository;
+    private UserRepository dbUserRepository;
 
     @Autowired
     private S3Service s3Service;
@@ -36,20 +35,38 @@ public class DBRentalsService {
     @Value("${picture.directory}")
     private String directory;
 
-    public ResponseEntity<?> getRentals() throws IOException{
-        return ResponseEntity.ok().body( new ArrayListOfDtoRentals(rentalSDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll())));
+    /**
+     * Get all rentals from database
+     * @return ArrayList<RentalSDto> an arraylist of all rentals
+     * @throws IOException
+     */
+    public ArrayList<RentalSDto> getRentals() throws IOException{
+        return rentalSDto.IterableDBRentalsToArrayListObjectRentals(DBRentalsRepository.findAll());
     }
 
-    public void addRentals(DBRentals DBRentals){
-        DBRentalsRepository.save(DBRentals);
+    /**
+     * save a new rental to database
+     * @param rental a rental Entity
+     */
+    public void addRentals(RentalEntity rental){
+        DBRentalsRepository.save(rental);
     }
 
-    public void removeRental(DBRentals DBRentals){
-        DBRentalsRepository.delete(DBRentals);
+    /**
+     * remove en rental from database
+     * @param rental a rental Entity
+     */
+    public void removeRental(RentalEntity rental){
+        DBRentalsRepository.delete(rental);
     }
 
-    public ResponseEntity<?> updateRental(String id, RentalUpdateDto rentalUpdateDto){
-        DBRentals dbOne = DBRentalsRepository.findById(Integer.parseInt(id));
+    /**
+     * update a rental by an id from database
+     * @param id of the rental to update
+     * @param rentalUpdateDto new informations to apply
+     */
+    public void updateRental(String id, RentalUpdateDto rentalUpdateDto){
+        RentalEntity dbOne = DBRentalsRepository.findById(Integer.parseInt(id));
         dbOne.setName(rentalUpdateDto.getName());
         dbOne.setSurface(rentalUpdateDto.getSurface());
         dbOne.setPrice(rentalUpdateDto.getPrice());
@@ -57,16 +74,26 @@ public class DBRentalsService {
         dbOne.setUpdatedAt(new TimeService().getTime());
 
         DBRentalsRepository.save(dbOne);
-
-        return ResponseEntity.ok().body(new simpleMessage("Rental updated !"));
     }
         
 
-    public ResponseEntity<?> getRentalsById(int id) throws ParseException, IOException {
-        return ResponseEntity.ok().body((DBRentalsRepository.findById(id)).ToRentalSDto());
+    /**
+     * get a rental by an id from database
+     * @param id id of the rental
+     * @return RentalSDto
+     * @throws ParseException
+     * @throws IOException
+     */
+    public RentalSDto getRentalsById(int id) throws ParseException, IOException {
+        return DBRentalsRepository.findById(id).ToRentalSDto();
     }
 
-    public ResponseEntity<?> createRental( RentalMDto rentalMDto){
+    /**
+     * create a new rental from database
+     * @param rentalMDto rental to create
+     * @return simpleMessage 
+     */
+    public simpleMessage createRental( RentalMDto rentalMDto){
         RentalSDto rentalSDto = rentalMDto.ToSdto();
 
         try {
@@ -74,7 +101,7 @@ public class DBRentalsService {
             Path filepath = Paths.get(directory, filename);
             String UrlPicture = s3Service.uploadFile(filepath, filename);
 
-            DBRentals rentalToAdd = new DBRentals(  rentalSDto.getName(),
+            RentalEntity rentalToAdd = new RentalEntity(  rentalSDto.getName(),
                                                     rentalSDto.getSurface(),
                                                     rentalSDto.getPrice(),
                                                     UrlPicture,
@@ -83,12 +110,16 @@ public class DBRentalsService {
                                                     new TimeService().getTime(),
                                                     new TimeService().getTime());
             addRentals(rentalToAdd);
-            return ResponseEntity.ok().body(new simpleMessage("Rental created !"));
+            return new simpleMessage("Rental created !");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Bad Request: " + e);
+            return new simpleMessage("Bad Request: " + e);
         }
     }
 
+    /**
+     * return authenticated user id 
+     * @return Id id of the authenticated user
+     */
     private int getAuthenticatedUserId(){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return dbUserRepository.findByEmail(username).getId();

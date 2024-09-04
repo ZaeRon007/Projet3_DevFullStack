@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "users")
 @Schema(description = "Modèle utilisateur pour la base de données")
-public class DBUser {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,9 @@ public class DBUser {
     @Column(name = "updated_at")
     private String updatedAt;
 
-    public DBUser(){}
+    public UserEntity(){}
 
-    public DBUser(  String name,
+    public UserEntity(  String name,
                     String email,
                     String createdAt,
                     String updatedAt

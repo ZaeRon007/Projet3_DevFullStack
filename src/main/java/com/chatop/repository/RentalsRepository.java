@@ -2,11 +2,11 @@ package com.chatop.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import com.chatop.model.DBRentals;
+import com.chatop.model.RentalEntity;
 
 
 @Repository
-public interface DBRentalsRepository extends CrudRepository<DBRentals, Integer>{
-    DBRentals findById(int id);
+public interface RentalsRepository extends CrudRepository<RentalEntity, Integer>{
+    RentalEntity findById(int id);
 
 }

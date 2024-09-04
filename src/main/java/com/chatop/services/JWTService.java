@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-import com.chatop.model.DBUser;
+import com.chatop.model.UserEntity;
 
 @Service
 public class JWTService {
@@ -24,7 +24,12 @@ public class JWTService {
 		this.jwtEncoder = jwtEncoder;
 	}
 	
-	public String generateToken(DBUser user) {
+        /**
+         * generate a new token for user
+         * @param a user entity
+         * @return a new token
+         */
+	public String generateToken(UserEntity user) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")

@@ -3,7 +3,9 @@ package com.chatop.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import com.chatop.model.dto.RentalMDto;
 import com.chatop.model.dto.RentalUpdateDto;
-import com.chatop.services.DBRentalsService;
+import com.chatop.model.responses.ArrayListOfDtoRentals;
+import com.chatop.model.responses.simpleMessage;
+import com.chatop.services.RentalsService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,10 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Tag(name = "Rental Controller", description = "Gesture component for rentals")
 @RestController
 @RequestMapping("/api/rentals")
-public class DBRentalController {
+public class RentalController {
 
     @Autowired
-    private DBRentalsService DBRentalsService;
+    private RentalsService rentalsService;
 
     @Operation(
         summary = "Allow user to get all rentals",
@@ -32,7 +34,7 @@ public class DBRentalController {
     )
     @GetMapping("")
     public ResponseEntity<?> getRentals() throws IOException {
-        return DBRentalsService.getRentals();
+        return ResponseEntity.ok().body( new ArrayListOfDtoRentals(rentalsService.getRentals()));
     }
 
     @Operation(
@@ -41,7 +43,7 @@ public class DBRentalController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getRentalsById(@PathVariable Integer id) throws ParseException, IOException {
-        return DBRentalsService.getRentalsById(id);
+        return ResponseEntity.ok().body(rentalsService.getRentalsById(id));
     }
 
     @Operation(
@@ -50,7 +52,7 @@ public class DBRentalController {
     )
     @PostMapping(path = "", consumes = { "multipart/form-data" })
     public ResponseEntity<?> createRental( RentalMDto rentalMDto){
-        return DBRentalsService.createRental(rentalMDto);
+        return ResponseEntity.ok().body(rentalsService.createRental(rentalMDto));
     }
     
     @Operation(
@@ -60,6 +62,8 @@ public class DBRentalController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(  @PathVariable String id, 
                                             RentalUpdateDto rentalUpdateDto) {
-        return DBRentalsService.updateRental(id, rentalUpdateDto);
+        rentalsService.updateRental(id, rentalUpdateDto);
+        return ResponseEntity.ok().body(new simpleMessage("Rental updated !"));
+
     }       
 }

@@ -1,7 +1,7 @@
 package com.chatop.model.dto;
 
 import org.springframework.context.annotation.Configuration;
-import com.chatop.model.DBMessages;
+import com.chatop.model.MessageEntity;
 import com.chatop.services.TimeService;
 import lombok.Data;
 
@@ -24,8 +24,8 @@ public class MessageDto {
         this.message = message;          
     }
 
-    public DBMessages ToDBMessages(){
-        return new DBMessages(  this.getRental_id(),
+    public MessageEntity ToMessageEntity(){
+        return new MessageEntity(  this.getRental_id(),
                                 this.getUser_id(),
                                 this.getMessage(),
                                 new TimeService().getTime(),

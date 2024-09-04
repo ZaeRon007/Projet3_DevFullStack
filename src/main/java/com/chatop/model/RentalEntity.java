@@ -16,7 +16,7 @@ import lombok.Data;
 @Entity
 @Table(name = "rentals")
 @Schema(description = "Modèle location pour la base de données")
-public class DBRentals {
+public class RentalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +47,9 @@ public class DBRentals {
     @Column(name = "updated_at")
     private String updatedAt;
 
-    public DBRentals(){}
+    public RentalEntity(){}
 
-    public DBRentals(   String name,
+    public RentalEntity(   String name,
                         BigDecimal surface,
                         BigDecimal price,
                         String picture,

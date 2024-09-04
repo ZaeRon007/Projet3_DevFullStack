@@ -1,7 +1,7 @@
 package com.chatop.model.dto;
 
 import org.springframework.context.annotation.Configuration;
-import com.chatop.model.DBUser;
+import com.chatop.model.UserEntity;
 import lombok.Data;
 
 @Data
@@ -27,8 +27,8 @@ public class UserDto {
         this.updated_at = updated_at;
     }
 
-    public DBUser ToDBUser(){
-        return new DBUser(  this.getName(),
+    public UserEntity ToUserEntity(){
+        return new UserEntity(  this.getName(),
                             this.getEmail(),
                             this.getCreated_at(),
                             this.getUpdated_at());

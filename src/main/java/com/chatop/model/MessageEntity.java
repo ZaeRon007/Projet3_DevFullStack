@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "messages")
 @Schema(description = "Modèle message pour la base de données")
-public class DBMessages {
+public class MessageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,9 @@ public class DBMessages {
     @Column(name = "updated_at")
     private String updatedAt;
 
-    public DBMessages(){}
+    public MessageEntity(){}
 
-    public DBMessages(  int rentalId,
+    public MessageEntity(  int rentalId,
                         int userId,
                         String message,
                         String createdAt,

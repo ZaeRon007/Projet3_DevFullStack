@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.context.annotation.Configuration;
-import com.chatop.model.DBRentals;
+import com.chatop.model.RentalEntity;
 import lombok.Data;
 
 @Data
@@ -54,8 +54,8 @@ public class RentalSDto {
         this.updated_at = updated_at;
     }
 
-    public DBRentals ToDBRental(){
-        return new DBRentals(   this.getName(), 
+    public RentalEntity ToRentalEntity(){
+        return new RentalEntity(   this.getName(), 
                                 this.getSurface(),
                                 this.getPrice(),
                                 this.getPicture(),
@@ -65,8 +65,8 @@ public class RentalSDto {
                                 this.getUpdated_at());
     }
 
-    public DBRentals ToDBRentals(Optional<DBRentals> rentals){
-        return new DBRentals(   rentals.get().getName(),
+    public RentalEntity ToRentalEntities(Optional<RentalEntity> rentals){
+        return new RentalEntity(   rentals.get().getName(),
                                 rentals.get().getSurface(),
                                 rentals.get().getPrice(),
                                 rentals.get().getPicture(),
@@ -76,10 +76,10 @@ public class RentalSDto {
                                 rentals.get().getUpdatedAt());
     }
 
-    public ArrayList<RentalSDto> IterableDBRentalsToArrayListObjectRentals(Iterable<DBRentals> rentals){
+    public ArrayList<RentalSDto> IterableDBRentalsToArrayListObjectRentals(Iterable<RentalEntity> rentals){
         ArrayList<RentalSDto> res = new ArrayList<>(); 
 
-        for (DBRentals dbRentals : rentals) {
+        for (RentalEntity dbRentals : rentals) {
             res.add(dbRentals.ToRentalSDto());
         }
         return res;
